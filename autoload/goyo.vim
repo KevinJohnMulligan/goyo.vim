@@ -38,8 +38,7 @@ function! s:set_color(group, attr, color)
 endfunction
 
 function! s:blank(repel)
-  if bufwinnr(t:goyo_pads.r) <= bufwinnr(t:goyo_pads.l) + 1
-    \ || bufwinnr(t:goyo_pads.b) <= bufwinnr(t:goyo_pads.t) + 3
+  if bufwinnr(t:goyo_pads.r) 
     call s:goyo_off()
   endif
   execute 'wincmd' a:repel
@@ -94,21 +93,23 @@ function! s:resize_pads()
   let yoff = s:const(t:goyo_dim.yoff, - vmargin, vmargin)
   let top = vmargin + yoff
   let bot = vmargin - yoff - 1
-  call s:setup_pad(t:goyo_pads.t, 0, top, 'j')
-  call s:setup_pad(t:goyo_pads.b, 0, bot, 'k')
+  "call s:setup_pad(t:goyo_pads.t, 0, top, 'j')
+  "call s:setup_pad(t:goyo_pads.b, 0, bot, 'k')
 
   let nwidth  = max([len(string(line('$'))) + 1, &numberwidth])
   let width   = t:goyo_dim.width + (&number ? nwidth : 0)
   let hmargin = max([0, (&columns - width) / 2 - 1])
   let xoff    = s:const(t:goyo_dim.xoff, - hmargin, hmargin)
-  call s:setup_pad(t:goyo_pads.l, 1, hmargin + xoff, 'l')
+  "call s:setup_pad(t:goyo_pads.l, 1, hmargin + xoff, 'l')
   call s:setup_pad(t:goyo_pads.r, 1, hmargin - xoff, 'h')
 endfunction
 
 function! s:tranquilize()
   let bg = s:get_color('Normal', 'bg#')
+"  for grp in ['NonText', 'FoldColumn', 'ColorColumn', 'VertSplit',
+"  \ 'StatusLine', 'StatusLineNC', 'SignColumn']
   for grp in ['NonText', 'FoldColumn', 'ColorColumn', 'VertSplit',
-            \ 'StatusLine', 'StatusLineNC', 'SignColumn']
+            \ 'SignColumn']
     " -1 on Vim / '' on GVim
     if bg == -1 || empty(bg)
       call s:set_color(grp, 'fg', get(g:, 'goyo_bg', 'black'))
@@ -229,7 +230,7 @@ function! s:goyo_on(dim)
     silent! call lightline#disable()
   endif
 
-  call s:hide_linenr()
+ " call s:hide_linenr()
   " Global options
   let &winheight = max([&winminheight, 1])
   set winminheight=1
@@ -250,10 +251,10 @@ function! s:goyo_on(dim)
     set guioptions-=L
   endif
 
-  let t:goyo_pads.l = s:init_pad('vertical topleft new')
+"  let t:goyo_pads.l = s:init_pad('vertical topleft new')
   let t:goyo_pads.r = s:init_pad('vertical botright new')
-  let t:goyo_pads.t = s:init_pad('topleft new')
-  let t:goyo_pads.b = s:init_pad('botright new')
+"  let t:goyo_pads.t = s:init_pad('topleft new')
+"  let t:goyo_pads.b = s:init_pad('botright new')
 
   call s:resize_pads()
   call s:tranquilize()
@@ -263,8 +264,8 @@ function! s:goyo_on(dim)
     autocmd TabLeave    * nested call s:goyo_off()
     autocmd VimResized  *        call s:resize_pads()
     autocmd ColorScheme *        call s:tranquilize()
-    autocmd BufWinEnter *        call s:hide_linenr() | call s:hide_statusline()
-    autocmd WinEnter,WinLeave *  call s:hide_statusline()
+"    autocmd BufWinEnter *        call s:hide_linenr() | call s:hide_statusline()
+"    autocmd WinEnter,WinLeave *  call s:hide_statusline()
     if has('nvim')
       autocmd TermClose * call feedkeys("\<plug>(goyo-resize)")
     endif

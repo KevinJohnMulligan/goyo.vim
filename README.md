@@ -5,6 +5,10 @@ This is a paired down version of the original goyo.vim with the aim of only prov
 
 The following screenshots show examples of these features. My [init.vim](https://github.com/KevinJohnMulligan/nvim) is setup to change colour depending on the mode, so that it is very obvious whether or not I'm in normal or insert mode.
 
+![normal mode](https://github.com/KevinJohnMulligan/goyo.vim/blob/media/example%20normal.png)
+
+![insert mode](https://github.com/KevinJohnMulligan/goyo.vim/blob/media/example%20insert.png)
+
 These modifications were done quickly and have not been fully bug tested.
 
 goyo.vim ([고요](http://en.wiktionary.org/wiki/고요하다))
